@@ -202,6 +202,34 @@ export function intersectRect(a: Rect, b: Rect, out?: Rect): Rect {
   };
 }
 
+/**
+ * Function to detect if bound b2 is overlap or is inside in bound b1
+ * @param b1: Bound
+ * @param b2 : Bound
+ * @returns true if is inside or overlap
+ */
+
+export function isIntersectBounds(b1: Bound, b2: Bound): boolean {
+
+  /* Bound to points (b as Bound)
+    topLeft  = [b.x1, b.y1]
+    topRight = [b.x2, b.y1]
+    bottomLeft  = [b.x1, b.y2]
+    bottomRight  = [b.x2, b.y2]
+   */
+
+  if(b1.y1 > b2.y2 || b2.y1 > b1.y2){ //check y
+    return false;
+  }
+
+  if(b1.x1 > b2.x2 || b2.x1 > b1.x2){  //check x
+    return false;
+  }
+
+  // Rectangles overlap
+  return true;
+}
+
 export function copyRect(a: Rect): Rect;
 export function copyRect<T extends Rect = Rect>(a: Rect, out: T): T;
 export function copyRect(a: Rect, out?: Rect): Rect {

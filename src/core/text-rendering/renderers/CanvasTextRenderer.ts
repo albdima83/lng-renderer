@@ -31,6 +31,7 @@ import {
   type BoundWithValid,
   createBound,
   type RectWithValid,
+  isIntersectBounds,
 } from '../../lib/utils.js';
 import type { ImageTexture } from '../../textures/ImageTexture.js';
 import type { TrFontFace } from '../font-face-types/TrFontFace.js';
@@ -297,6 +298,22 @@ export class CanvasTextRenderer extends TextRenderer<CanvasTextRendererState> {
   }
 
   override updateState(state: CanvasTextRendererState): void {
+
+      const pLeft = state.props.x;
+      const pRight = pLeft + (state.props.width ?? 0);
+      const pTop = state.props.y;
+      const pBottom = pTop + state.props.height;
+      const elementBounds: Bound = {
+        x1: pLeft,
+        x2: pRight,
+        y1: pTop,
+        y2: pBottom
+      }
+      const intesect = isIntersectBounds(this.rendererBounds,elementBounds);
+      if(!intesect){
+        return
+      }
+
     // On the first update call we need to set the status to loading
     if (state.status === 'initialState') {
       this.setStatus(state, 'loading');
@@ -700,6 +717,24 @@ export class CanvasTextRenderer extends TextRenderer<CanvasTextRendererState> {
     state.visibleWindow.valid = false;
     this.setStatus(state, 'loading');
     this.scheduleUpdateState(state);
+  }
+
+  override scheduleUpdateState(state: CanvasTextRendererState):void {
+    const pLeft = state.props.x;
+    const pRight = pLeft + (state.props.width ?? 0);
+    const pTop = state.props.y;
+    const pBottom = pTop + state.props.height;
+    const elementBounds: Bound = {
+      x1: pLeft,
+      x2: pRight,
+      y1: pTop,
+      y2: pBottom
+    }
+    const intesect = isIntersectBounds(this.rendererBounds,elementBounds);
+    if(intesect){
+      //console.log(`scheduleUpdateState: [${state.props.text}] [${JSON.stringify(elementBounds)}]`);
+      super.scheduleUpdateState(state);
+    }
   }
 
   /**

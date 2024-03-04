@@ -27,6 +27,7 @@ import {
   copyRect,
   boundsOverlap,
   convertBoundToRect,
+  isIntersectBounds,
 } from '../../../lib/utils.js';
 import {
   TextRenderer,
@@ -739,6 +740,30 @@ export class SdfTextRenderer extends TextRenderer<SdfTextRendererState> {
       props,
     ) as SdfTrFontFace | undefined;
   }
+
+  override scheduleUpdateState(state: SdfTextRendererState):void {
+
+    if(!state || !state.props || !state.props.text){
+      return;
+    }
+
+    const pLeft = state.props.x;
+    const pRight = pLeft + (state.props.width ?? 0);
+    const pTop = state.props.y;
+    const pBottom = pTop + state.props.height;
+    const elementBounds: Bound = {
+      x1: pLeft,
+      x2: pRight,
+      y1: pTop,
+      y2: pBottom
+    }
+    const intesect = isIntersectBounds(this.rendererBounds,elementBounds);
+    if(intesect){
+      //console.log(`scheduleUpdateState: [${state.props.text}] [${JSON.stringify(elementBounds)}]`);
+      super.scheduleUpdateState(state);
+    }
+  }
+
 
   /**
    * Invalidate the layout cache stored in the state. This will cause the text

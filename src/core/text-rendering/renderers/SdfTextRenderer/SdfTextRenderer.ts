@@ -672,6 +672,8 @@ export class SdfTextRenderer extends TextRenderer<SdfTextRendererState> {
       { height: textH, width: textW },
       0,
       zIndex,
+      false,
+      false,
     );
 
     const texture = state.trFontFace?.texture;
@@ -744,9 +746,8 @@ export class SdfTextRenderer extends TextRenderer<SdfTextRendererState> {
       | undefined;
   }
 
-  override scheduleUpdateState(state: SdfTextRendererState):void {
-
-    if(!state || !state.props || !state.props.text){
+  override scheduleUpdateState(state: SdfTextRendererState): void {
+    if (!state || !state.props || !state.props.text) {
       return;
     }
 
@@ -758,15 +759,14 @@ export class SdfTextRenderer extends TextRenderer<SdfTextRendererState> {
       x1: pLeft,
       x2: pRight,
       y1: pTop,
-      y2: pBottom
-    }
-    const intesect = isIntersectBounds(this.rendererBounds,elementBounds);
-    if(intesect){
+      y2: pBottom,
+    };
+    const intesect = isIntersectBounds(this.rendererBounds, elementBounds);
+    if (intesect) {
       //console.log(`scheduleUpdateState: [${state.props.text}] [${JSON.stringify(elementBounds)}]`);
       super.scheduleUpdateState(state);
     }
   }
-
 
   /**
    * Invalidate the layout cache stored in the state. This will cause the text

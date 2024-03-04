@@ -392,20 +392,36 @@ export interface INodeWritableProps {
    * - `2 * Math.PI`: 360 rotation clockwise
    */
   rotation: number;
+
   /**
-   * Node data element for custom data storage (optional)
+   * Whether the Node is rendered to a texture
    *
    * @remarks
-   * This property is used to store custom data on the Node as a key/value data store.
-   * Data values are limited to string, numbers, booleans. Strings will be truncated
-   * to a 2048 character limit for performance reasons.
+   * TBD
+   * @default false
    *
-   * This is not a data storage mechanism for large amounts of data please use a
-   * dedicated data storage mechanism for that.
-   *
-   * The custom data will be reflected in the inspector as part of `data-*` attributes
+   */
+
+  rtt: boolean;
+  /**
+   * Whether the Node has a Render Texture as a parent
+   */
+  parentHasRenderTexture: boolean;
+
+  /**
    *
    * @default `undefined`
+   * The custom data will be reflected in the inspector as part of `data-*` attributes
+   *
+   * dedicated data storage mechanism for that.
+   *
+   * This is not a data storage mechanism for large amounts of data please use a
+   * to a 2048 character limit for performance reasons.
+   * Data values are limited to string, numbers, booleans. Strings will be truncated
+   * This property is used to store custom data on the Node as a key/value data store.
+   * @remarks
+   *
+   * Node data element for custom data storage (optional)
    */
   data?: CustomDataMap;
 }
